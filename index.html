@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>osu! Rankings Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg: #14151a;
+    --surface: #1b1c24;
+    --surface-alt: #20212c;
+    --border: rgba(255,255,255,0.08);
+    --text: #ece9f5;
+    --text-muted: #8d8b9c;
+    --accent: #ff66ab;
+    --accent-dim: rgba(255,102,171,0.16);
+    --good: #4ce0b3;
+    --bad: #ff6b6b;
+    --radius: 8px;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .num{ font-family: 'JetBrains Mono', monospace; }
+  header{
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1{
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  header h1 span{ color: var(--accent); }
+  header p{
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13.5px;
+  }
+  #status-dot{
+    display:inline-block;
+    width:7px; height:7px;
+    border-radius:50%;
+    background: var(--good);
+    margin-right:6px;
+    box-shadow: 0 0 0 3px rgba(76,224,179,0.18);
+  }
+  main{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px 28px 60px;
+  }
+  .filters{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .filters label{
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-right: 8px;
+  }
+  select{
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 7px 10px;
+    font-family: inherit;
+    font-size: 13.5px;
+  }
+  .chips{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip{
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 6px 13px;
+    font-size: 12.5px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.12s ease;
+  }
+  .chip[data-active="true"]{
+    border-color: var(--chip-color, var(--accent));
+    color: var(--text);
+    background: var(--chip-color-dim, var(--accent-dim));
+  }
+  .chip:hover{ color: var(--text); }
+  .panel{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px 8px;
+    margin-bottom: 20px;
+  }
+  .panel-head{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .panel-head h2{
+    font-family: 'Sora', sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+  }
+  .toggle-group{ display:flex; gap:4px; }
+  .toggle-btn{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-btn[data-active="true"]{
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  canvas{ max-height: 260px; }
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th, td{
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  td.num, th.num{ text-align: right; }
+  .delta{ font-size: 11.5px; margin-left: 6px; }
+  .delta.good{ color: var(--good); }
+  .delta.bad{ color: var(--bad); }
+  .delta.flat{ color: var(--text-muted); }
+  .empty{
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty strong{ color: var(--text); display:block; margin-bottom:6px; font-size:15px; }
+  footer{
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 11.5px;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>osu<span>!</span> Rankings Tracker</h1>
+  <p><span id="status-dot"></span><span id="last-updated">Loading data&hellip;</span></p>
+</header>
+
+<main>
+  <div id="content"></div>
+</main>
+
+<footer>Data refreshes on a schedule via GitHub Actions &mdash; this page only reads a static JSON file, no API calls happen in your browser.</footer>
+
+
+<style>
+  :root{
+    --bg: #14151a;
+    --surface: #1b1c24;
+    --surface-alt: #20212c;
+    --border: rgba(255,255,255,0.08);
+    --text: #ece9f5;
+    --text-muted: #8d8b9c;
+    --accent: #ff66ab;
+    --accent-dim: rgba(255,102,171,0.16);
+    --good: #4ce0b3;
+    --bad: #ff6b6b;
+    --radius: 8px;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .num{ font-family: 'JetBrains Mono', monospace; }
+  header{
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1{
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  header h1 span{ color: var(--accent); }
+  header p{
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13.5px;
+  }
+  #status-dot{
+    display:inline-block;
+    width:7px; height:7px;
+    border-radius:50%;
+    background: var(--good);
+    margin-right:6px;
+    box-shadow: 0 0 0 3px rgba(76,224,179,0.18);
+  }
+  main{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px 28px 60px;
+  }
+  .filters{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .filters label{
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-right: 8px;
+  }
+  select{
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 7px 10px;
+    font-family: inherit;
+    font-size: 13.5px;
+  }
+  .chips{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip{
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 6px 13px;
+    font-size: 12.5px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.12s ease;
+  }
+  .chip[data-active="true"]{
+    border-color: var(--chip-color, var(--accent));
+    color: var(--text);
+    background: var(--chip-color-dim, var(--accent-dim));
+  }
+  .chip:hover{ color: var(--text); }
+  .panel{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px 8px;
+    margin-bottom: 20px;
+  }
+  .panel-head{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .panel-head h2{
+    font-family: 'Sora', sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+  }
+  .toggle-group{ display:flex; gap:4px; }
+  .toggle-btn{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-btn[data-active="true"]{
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  canvas{ max-height: 260px; }
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th, td{
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  th{
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  td.num, th.num{ text-align: right; }
+  .delta{ font-size: 11.5px; margin-left: 6px; }
+  .delta.good{ color: var(--good); }
+  .delta.bad{ color: var(--bad); }
+  .delta.flat{ color: var(--text-muted); }
+  .empty{
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty strong{ color: var(--text); display:block; margin-bottom:6px; font-size:15px; }
+  footer{
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 11.5px;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>osu<span>!</span> Rankings Tracker</h1>
+  <p><span id="status-dot"></span><span id="last-updated">Loading data&hellip;</span></p>
+</header>
+
+<main>
+  <div id="content"></div>
+</main>
+
+<footer>Data refreshes on a schedule via GitHub Actions &mdash; this page only reads a static JSON file, no API calls happen in your browser.</footer>
+
+<script>
+const PALETTE = ['#ff66ab', '#4ce0b3', '#7c9eff', '#ffb454', '#c792ea', '#5ad8e6', '#ff8a5b', '#9fef00'];
+
+let historyData = { snapshots: [] };
+let state = {
+  country: null,
+  selectedPlayers: new Set(),
+  rankMetric: 'global_rank', // 'global_rank' | 'country_rank'
+};
+let charts = {};
+
+async function loadData(){
+  try{
+    const res = await fetch('./data/history.json', { cache: 'no-store' });
+    historyData = await res.json();
+  }catch(e){
+    historyData = { snapshots: [] };
+  }
+  render();
+}
+
+function getCountries(){
+  const set = new Set();
+  historyData.snapshots.forEach(s => s.players.forEach(p => set.add(p.country)));
+  return Array.from(set).sort();
+}
+
+function getPlayersForCountry(country){
+  // union of every player ever seen for this country, keyed by user_id,
+  // ranked using the most recent snapshot that included them
+  const map = new Map();
+  historyData.snapshots.forEach(s => {
+    s.players.filter(p => p.country === country).forEach(p => {
+      map.set(p.user_id, p);
+    });
+  });
+  return Array.from(map.values()).sort((a, b) => a.global_rank - b.global_rank);
+}
+
+function colorFor(index){
+  return PALETTE[index % PALETTE.length];
+}
+
+function fmtTime(ts){
+  const d = new Date(ts);
+  return d.toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+function buildSeries(playerIds, metric, country){
+  const labels = historyData.snapshots.map(s => fmtTime(s.timestamp));
+  const datasets = playerIds.map((uid, i) => {
+    const playerMeta = getPlayersForCountry(country).find(p => p.user_id === uid);
+    const data = historyData.snapshots.map(s => {
+      const p = s.players.find(pl => pl.user_id === uid);
+      return p ? p[metric] : null;
+    });
+    return {
+      label: playerMeta ? playerMeta.username : uid,
+      data,
+      borderColor: colorFor(i),
+      backgroundColor: colorFor(i),
+      spanGaps: true,
+      tension: 0.25,
+      pointRadius: 2,
+      borderWidth: 2,
+    };
+  });
+  return { labels, datasets };
+}
+
+function renderChart(canvasId, metric, country, reverseY, yLabel){
+  const ids = Array.from(state.selectedPlayers);
+  const { labels, datasets } = buildSeries(ids, metric, country);
+  if(charts[canvasId]) charts[canvasId].destroy();
+
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  charts[canvasId] = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'nearest', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: 'nearest', intersect: false },
+      },
+      scales: {
+        x: { ticks: { color: '#8d8b9c', maxRotation: 0, autoSkip: true }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: {
+          reverse: !!reverseY,
+          ticks: { color: '#8d8b9c' },
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          title: { display: true, text: yLabel, color: '#8d8b9c', font: { size: 11 } },
+        },
+      },
+    },
+  });
+}
+
+function computeDelta(current, previous, lowerIsBetter){
+  if(previous === null || previous === undefined || current === null || current === undefined){
+    return { text: '', cls: 'flat' };
+  }
+  const diff = current - previous;
+  if(diff === 0) return { text: '\u2013', cls: 'flat' };
+  const improved = lowerIsBetter ? diff < 0 : diff > 0;
+  const arrow = diff < 0 ? '\u25bc' : '\u25b2';
+  return { text: `${arrow} ${Math.abs(diff).toFixed(lowerIsBetter ? 0 : 2)}`, cls: improved ? 'good' : 'bad' };
+}
+
+function renderTable(country){
+  const snapshots = historyData.snapshots;
+  const latest = snapshots[snapshots.length - 1];
+  const prev = snapshots.length > 1 ? snapshots[snapshots.length - 2] : null;
+
+  const rows = latest.players
+    .filter(p => p.country === country)
+    .sort((a, b) => (a.country_rank ?? a.global_rank) - (b.country_rank ?? b.global_rank));
+
+  const trs = rows.map(p => {
+    const prevP = prev ? prev.players.find(pp => pp.user_id === p.user_id) : null;
+    const rankDelta = computeDelta(p.global_rank, prevP ? prevP.global_rank : null, true);
+    const ppDelta = computeDelta(p.pp, prevP ? prevP.pp : null, false);
+    return `
+      <tr>
+        <td class="num">#${p.country_rank ?? '\u2013'}</td>
+        <td>${p.username}</td>
+        <td class="num">#${p.global_rank.toLocaleString()}<span class="delta ${rankDelta.cls}">${rankDelta.text}</span></td>
+        <td class="num">${p.pp.toLocaleString(undefined,{maximumFractionDigits:1})}pp<span class="delta ${ppDelta.cls}">${ppDelta.text}</span></td>
+        <td class="num">${p.accuracy.toFixed(2)}%</td>
+      </tr>`;
+  }).join('');
+
+  return `
+    <div class="panel">
+      <div class="panel-head"><h2>Current standings &mdash; ${country}</h2></div>
+      <table>
+        <thead><tr>
+          <th class="num">Country&nbsp;rank</th><th>Player</th>
+          <th class="num">Global rank</th><th class="num">Performance</th><th class="num">Accuracy</th>
+        </tr></thead>
+        <tbody>${trs}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderChips(country){
+  const players = getPlayersForCountry(country);
+  return players.map((p, i) => {
+    const active = state.selectedPlayers.has(p.user_id);
+    return `<div class="chip" data-uid="${p.user_id}" data-active="${active}"
+              style="--chip-color:${colorFor(i)}; --chip-color-dim:${colorFor(i)}33;">
+              ${p.username}
+            </div>`;
+  }).join('');
+}
+
+function attachEvents(country){
+  document.getElementById('country-select').addEventListener('change', (e) => {
+    state.country = e.target.value;
+    const top = getPlayersForCountry(state.country).slice(0, 10).map(p => p.user_id);
+    state.selectedPlayers = new Set(top);
+    render();
+  });
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const uid = Number(chip.dataset.uid);
+      if(state.selectedPlayers.has(uid)) state.selectedPlayers.delete(uid);
+      else state.selectedPlayers.add(uid);
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-rank-metric]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.rankMetric = btn.dataset.rankMetric;
+      render();
+    });
+  });
+}
+
+function render(){
+  const countries = getCountries();
+  const lastUpdatedEl = document.getElementById('last-updated');
+  const contentEl = document.getElementById('content');
+
+  if(historyData.snapshots.length === 0 || countries.length === 0){
+    lastUpdatedEl.textContent = 'No data yet';
+    contentEl.innerHTML = `
+      <div class="panel empty">
+        <strong>Waiting on the first snapshot</strong>
+        No rankings data has been collected yet. Go to the Actions tab on GitHub and
+        run the "Update osu! rankings data" workflow manually (or wait for its next scheduled run).
+      </div>`;
+    return;
+  }
+
+  if(!state.country || !countries.includes(state.country)) state.country = countries[0];
+  if(state.selectedPlayers.size === 0){
+    const top = getPlayersForCountry(state.country).slice(0, 10).map(p => p.user_id);
+    state.selectedPlayers = new Set(top);
+  }
+
+  const latestTs = historyData.snapshots[historyData.snapshots.length - 1].timestamp;
+  lastUpdatedEl.textContent = `Last updated ${new Date(latestTs).toLocaleString()}`;
+
+  contentEl.innerHTML = `
+    <div class="filters">
+      <div>
+        <label>Country</label>
+        <select id="country-select">
+          ${countries.map(c => `<option value="${c}" ${c === state.country ? 'selected' : ''}>${c}</option>`).join('')}
+        </select>
+      </div>
+      <div style="flex:1">
+        <label>Players</label>
+        <div class="chips">${renderChips(state.country)}</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Rank over time (lower is better)</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn" data-rank-metric="global_rank" data-active="${state.rankMetric === 'global_rank'}">Global</button>
+          <button class="toggle-btn" data-rank-metric="country_rank" data-active="${state.rankMetric === 'country_rank'}">Country</button>
+        </div>
+      </div>
+      <canvas id="chart-rank"></canvas>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>Performance (pp) over time</h2></div>
+      <canvas id="chart-pp"></canvas>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>Accuracy over time</h2></div>
+      <canvas id="chart-accuracy"></canvas>
+    </div>
+
+    ${renderTable(state.country)}
+  `;
+
+  attachEvents(state.country);
+  renderChart('chart-rank', state.rankMetric, state.country, true, state.rankMetric === 'global_rank' ? 'Global rank' : 'Country rank');
+  renderChart('chart-pp', 'pp', state.country, false, 'pp');
+  renderChart('chart-accuracy', 'accuracy', state.country, false, '%');
+}
+
+loadData();
+</script>
+</body>
+</html>
