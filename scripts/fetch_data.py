@@ -39,8 +39,10 @@ API_URL = "https://osu.ppy.sh/api/v2"
 
 
 def get_token() -> str:
-    client_id = os.environ["OSU_CLIENT_ID"]
-    client_secret = os.environ["OSU_CLIENT_SECRET"]
+    client_id = os.environ["OSU_CLIENT_ID"].strip()
+    client_secret = os.environ["OSU_CLIENT_SECRET"].strip()
+
+    print(f"DEBUG: client_id={client_id!r} len={len(client_id)}, client_secret len={len(client_secret)}")
 
     resp = requests.post(
         AUTH_URL,
@@ -52,6 +54,8 @@ def get_token() -> str:
         },
         timeout=30,
     )
+    if resp.status_code != 200:
+        print(f"DEBUG: status={resp.status_code} body={resp.text}")
     resp.raise_for_status()
     return resp.json()["access_token"]
 
