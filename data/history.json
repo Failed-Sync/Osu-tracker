@@ -113749,6 +113749,461 @@
           "accuracy": 86.56
         }
       ]
+    },
+    {
+      "timestamp": "2026-07-14T02:03:30Z",
+      "players": [
+        {
+          "user_id": 9321462,
+          "username": "osakerr",
+          "country": "BW",
+          "global_rank": 11879,
+          "country_rank": 1,
+          "pp": 9111.38,
+          "accuracy": 98.63
+        },
+        {
+          "user_id": 12244428,
+          "username": "verGlasY",
+          "country": "BW",
+          "global_rank": 14665,
+          "country_rank": 2,
+          "pp": 8717.26,
+          "accuracy": 98.84
+        },
+        {
+          "user_id": 30472623,
+          "username": "Landlord",
+          "country": "BW",
+          "global_rank": 37723,
+          "country_rank": 3,
+          "pp": 6923.26,
+          "accuracy": 98.4
+        },
+        {
+          "user_id": 23746222,
+          "username": "ZEALFUTURE",
+          "country": "BW",
+          "global_rank": 67123,
+          "country_rank": 4,
+          "pp": 5820.84,
+          "accuracy": 98.14
+        },
+        {
+          "user_id": 22797311,
+          "username": "leonerd jezter",
+          "country": "BW",
+          "global_rank": 135655,
+          "country_rank": 5,
+          "pp": 4449.23,
+          "accuracy": 98.35
+        },
+        {
+          "user_id": 35967673,
+          "username": "DetectiveBakon",
+          "country": "BW",
+          "global_rank": 199330,
+          "country_rank": 6,
+          "pp": 3657.53,
+          "accuracy": 96.98
+        },
+        {
+          "user_id": 37466742,
+          "username": "SlazyUwU",
+          "country": "BW",
+          "global_rank": 302408,
+          "country_rank": 7,
+          "pp": 2827.56,
+          "accuracy": 96.22
+        },
+        {
+          "user_id": 34633771,
+          "username": "aghbani",
+          "country": "BW",
+          "global_rank": 353415,
+          "country_rank": 8,
+          "pp": 2524.51,
+          "accuracy": 89.42
+        },
+        {
+          "user_id": 35295094,
+          "username": "Tokoloshi",
+          "country": "BW",
+          "global_rank": 361925,
+          "country_rank": 9,
+          "pp": 2478.32,
+          "accuracy": 98.04
+        },
+        {
+          "user_id": 18374354,
+          "username": "Anim3bo1",
+          "country": "BW",
+          "global_rank": 379509,
+          "country_rank": 10,
+          "pp": 2385.33,
+          "accuracy": 97.13
+        },
+        {
+          "user_id": 21604200,
+          "username": "XxRAFIUNxX",
+          "country": "BW",
+          "global_rank": 408061,
+          "country_rank": 11,
+          "pp": 2247.42,
+          "accuracy": 89.9
+        },
+        {
+          "user_id": 29966830,
+          "username": "mstone003",
+          "country": "BW",
+          "global_rank": 425316,
+          "country_rank": 12,
+          "pp": 2166.87,
+          "accuracy": 96.49
+        },
+        {
+          "user_id": 29870281,
+          "username": "Dreamer216",
+          "country": "BW",
+          "global_rank": 429257,
+          "country_rank": 13,
+          "pp": 2149.4,
+          "accuracy": 96.62
+        },
+        {
+          "user_id": 26945697,
+          "username": "Haseeb Khan",
+          "country": "BW",
+          "global_rank": 485256,
+          "country_rank": 14,
+          "pp": 1916.16,
+          "accuracy": 90.97
+        },
+        {
+          "user_id": 36968634,
+          "username": "wolfboy",
+          "country": "BW",
+          "global_rank": 498792,
+          "country_rank": 15,
+          "pp": 1865.08,
+          "accuracy": 92.47
+        },
+        {
+          "user_id": 9912059,
+          "username": "s1x_2_s3vEn",
+          "country": "BW",
+          "global_rank": 512288,
+          "country_rank": 16,
+          "pp": 1814.45,
+          "accuracy": 93.36
+        },
+        {
+          "user_id": 30708643,
+          "username": "Iphazha",
+          "country": "BW",
+          "global_rank": 591861,
+          "country_rank": 17,
+          "pp": 1549.61,
+          "accuracy": 97.2
+        },
+        {
+          "user_id": 29408624,
+          "username": "MRshutter",
+          "country": "BW",
+          "global_rank": 628937,
+          "country_rank": 18,
+          "pp": 1440.5,
+          "accuracy": 97.01
+        },
+        {
+          "user_id": 9912098,
+          "username": "PwDarkstorm",
+          "country": "BW",
+          "global_rank": 652222,
+          "country_rank": 19,
+          "pp": 1375.6,
+          "accuracy": 84.35
+        },
+        {
+          "user_id": 21448195,
+          "username": "IPM360",
+          "country": "BW",
+          "global_rank": 683293,
+          "country_rank": 20,
+          "pp": 1294.21,
+          "accuracy": 93.21
+        },
+        {
+          "user_id": 38520554,
+          "username": "Clayzenn",
+          "country": "BW",
+          "global_rank": 694778,
+          "country_rank": 21,
+          "pp": 1266.51,
+          "accuracy": 97.86
+        },
+        {
+          "user_id": 35740282,
+          "username": "Coco_Felon",
+          "country": "BW",
+          "global_rank": 734414,
+          "country_rank": 22,
+          "pp": 1170.59,
+          "accuracy": 97.45
+        },
+        {
+          "user_id": 24802691,
+          "username": "OsuBoyAqua",
+          "country": "BW",
+          "global_rank": 764415,
+          "country_rank": 23,
+          "pp": 1103.83,
+          "accuracy": 82.75
+        },
+        {
+          "user_id": 24520169,
+          "username": "Itachi crack",
+          "country": "BW",
+          "global_rank": 832658,
+          "country_rank": 24,
+          "pp": 962.727,
+          "accuracy": 85.39
+        },
+        {
+          "user_id": 30709307,
+          "username": "player879",
+          "country": "BW",
+          "global_rank": 892130,
+          "country_rank": 25,
+          "pp": 851.738,
+          "accuracy": 85.09
+        },
+        {
+          "user_id": 23300595,
+          "username": "chris_013",
+          "country": "BW",
+          "global_rank": 906456,
+          "country_rank": 26,
+          "pp": 826.759,
+          "accuracy": 93.29
+        },
+        {
+          "user_id": 15779751,
+          "username": "Xoxticitgaming",
+          "country": "BW",
+          "global_rank": 937109,
+          "country_rank": 27,
+          "pp": 775.344,
+          "accuracy": 85.92
+        },
+        {
+          "user_id": 19025357,
+          "username": "BreezyGamer_36",
+          "country": "BW",
+          "global_rank": 982455,
+          "country_rank": 28,
+          "pp": 704.978,
+          "accuracy": 92.83
+        },
+        {
+          "user_id": 35767146,
+          "username": "Some single guy",
+          "country": "BW",
+          "global_rank": 1062463,
+          "country_rank": 29,
+          "pp": 593.683,
+          "accuracy": 82.42
+        },
+        {
+          "user_id": 39078955,
+          "username": "yotropy",
+          "country": "BW",
+          "global_rank": 1132406,
+          "country_rank": 30,
+          "pp": 509.233,
+          "accuracy": 84.72
+        },
+        {
+          "user_id": 20214274,
+          "username": "Nagito396",
+          "country": "BW",
+          "global_rank": 1140474,
+          "country_rank": 31,
+          "pp": 500.129,
+          "accuracy": 94.28
+        },
+        {
+          "user_id": 35001421,
+          "username": "enyt",
+          "country": "BW",
+          "global_rank": 1159204,
+          "country_rank": 32,
+          "pp": 479.728,
+          "accuracy": 93.51
+        },
+        {
+          "user_id": 36534731,
+          "username": "AJCLAP69",
+          "country": "BW",
+          "global_rank": 1164997,
+          "country_rank": 33,
+          "pp": 473.579,
+          "accuracy": 82.0
+        },
+        {
+          "user_id": 37343680,
+          "username": "razzak12345",
+          "country": "BW",
+          "global_rank": 1171600,
+          "country_rank": 34,
+          "pp": 466.574,
+          "accuracy": 80.06
+        },
+        {
+          "user_id": 24019944,
+          "username": "DanganJunko",
+          "country": "BW",
+          "global_rank": 1242594,
+          "country_rank": 35,
+          "pp": 396.556,
+          "accuracy": 94.4
+        },
+        {
+          "user_id": 21215476,
+          "username": "DJqquueeeenn432",
+          "country": "BW",
+          "global_rank": 1247988,
+          "country_rank": 36,
+          "pp": 391.476,
+          "accuracy": 96.32
+        },
+        {
+          "user_id": 38544877,
+          "username": "RaegenReevez",
+          "country": "BW",
+          "global_rank": 1277953,
+          "country_rank": 37,
+          "pp": 364.88,
+          "accuracy": 82.16
+        },
+        {
+          "user_id": 14163763,
+          "username": "Cozan1",
+          "country": "BW",
+          "global_rank": 1287842,
+          "country_rank": 38,
+          "pp": 356.412,
+          "accuracy": 92.68
+        },
+        {
+          "user_id": 38096633,
+          "username": "stoiclee",
+          "country": "BW",
+          "global_rank": 1312083,
+          "country_rank": 39,
+          "pp": 336.113,
+          "accuracy": 94.01
+        },
+        {
+          "user_id": 39143066,
+          "username": "DangerZero123",
+          "country": "BW",
+          "global_rank": 1376599,
+          "country_rank": 40,
+          "pp": 286.708,
+          "accuracy": 89.55
+        },
+        {
+          "user_id": 31880921,
+          "username": "Divine_Brad",
+          "country": "BW",
+          "global_rank": 1424384,
+          "country_rank": 41,
+          "pp": 253.696,
+          "accuracy": 90.89
+        },
+        {
+          "user_id": 33538049,
+          "username": "waffles4444",
+          "country": "BW",
+          "global_rank": 1446484,
+          "country_rank": 42,
+          "pp": 239.317,
+          "accuracy": 90.6
+        },
+        {
+          "user_id": 39100192,
+          "username": "-[-Lucario-]-",
+          "country": "BW",
+          "global_rank": 1447640,
+          "country_rank": 43,
+          "pp": 238.59,
+          "accuracy": 90.29
+        },
+        {
+          "user_id": 25907497,
+          "username": "Kingz16_old_1",
+          "country": "BW",
+          "global_rank": 1478408,
+          "country_rank": 44,
+          "pp": 220.178,
+          "accuracy": 80.91
+        },
+        {
+          "user_id": 39943666,
+          "username": "Syber-line",
+          "country": "BW",
+          "global_rank": 1535881,
+          "country_rank": 45,
+          "pp": 188.366,
+          "accuracy": 82.55
+        },
+        {
+          "user_id": 33802325,
+          "username": "CyxX_RBLX",
+          "country": "BW",
+          "global_rank": 1537972,
+          "country_rank": 46,
+          "pp": 187.27,
+          "accuracy": 61.48
+        },
+        {
+          "user_id": 38540207,
+          "username": "TanUchiha",
+          "country": "BW",
+          "global_rank": 1557560,
+          "country_rank": 47,
+          "pp": 177.368,
+          "accuracy": 89.26
+        },
+        {
+          "user_id": 37900053,
+          "username": "kazketolii",
+          "country": "BW",
+          "global_rank": 1643390,
+          "country_rank": 48,
+          "pp": 138.65,
+          "accuracy": 90.73
+        },
+        {
+          "user_id": 37258902,
+          "username": "Rip_NotGog",
+          "country": "BW",
+          "global_rank": 1648569,
+          "country_rank": 49,
+          "pp": 136.581,
+          "accuracy": 88.03
+        },
+        {
+          "user_id": 31149382,
+          "username": "xhelpm3",
+          "country": "BW",
+          "global_rank": 1677277,
+          "country_rank": 50,
+          "pp": 125.406,
+          "accuracy": 86.56
+        }
+      ]
     }
   ]
 }
